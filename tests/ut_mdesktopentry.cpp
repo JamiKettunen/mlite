@@ -6,6 +6,10 @@
 
 #include "mdesktopentry.h"
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+using endl = Qt::endl
+#endif
+
 namespace Tests {
 
 class UtMDesktopEntry : public QObject
@@ -284,9 +288,19 @@ void UtMDesktopEntry::values()
     } else if (key == "Hidden") {
         QCOMPARE(entry.hidden() ? QString("true") : QString("false"), expected);
     } else if (key == "OnlyShowIn") {
-        QCOMPARE(entry.onlyShowIn(), expected.split(QRegExp("\\s*;\\s*"), QString::SkipEmptyParts));
+        QCOMPARE(entry.onlyShowIn(), expected.split(QRegularExpression("\\s*;\\s*"),
+#if (QT_VERSION < QT_VERSION_CHECK(5, 14, 0))
+                                                    QString::SkipEmptyParts));
+#else
+                                                    Qt::SkipEmptyParts));
+#endif
     } else if (key == "NotShowIn") {
-        QCOMPARE(entry.notShowIn(), expected.split(QRegExp("\\s*;\\s*"), QString::SkipEmptyParts));
+        QCOMPARE(entry.notShowIn(), expected.split(QRegularExpression("\\s*;\\s*"),
+#if (QT_VERSION < QT_VERSION_CHECK(5, 14, 0))
+                                                    QString::SkipEmptyParts));
+#else
+                                                    Qt::SkipEmptyParts));
+#endif
     } else if (key == "TryExec") {
         QCOMPARE(entry.tryExec(), expected);
     } else if (key == "Exec") {
@@ -296,9 +310,19 @@ void UtMDesktopEntry::values()
     } else if (key == "Terminal") {
         QCOMPARE(entry.terminal() ? QString("true") : QString("false"), expected);
     } else if (key == "MimeType") {
-        QCOMPARE(entry.mimeType(), expected.split(QRegExp("\\s*;\\s*"), QString::SkipEmptyParts));
+        QCOMPARE(entry.mimeType(), expected.split(QRegularExpression("\\s*;\\s*"),
+#if (QT_VERSION < QT_VERSION_CHECK(5, 14, 0))
+                                                    QString::SkipEmptyParts));
+#else
+                                                    Qt::SkipEmptyParts));
+#endif
     } else if (key == "Categories") {
-        QCOMPARE(entry.categories(), expected.split(QRegExp("\\s*;\\s*"), QString::SkipEmptyParts));
+        QCOMPARE(entry.categories(), expected.split(QRegularExpression("\\s*;\\s*"),
+#if (QT_VERSION < QT_VERSION_CHECK(5, 14, 0))
+                                                    QString::SkipEmptyParts));
+#else
+                                                    Qt::SkipEmptyParts));
+#endif
     } else if (key == "StartupNotify") {
         QCOMPARE(entry.startupNotify() ? QString("true") : QString("false"), expected);
     } else if (key == "StartupWMClass") {
